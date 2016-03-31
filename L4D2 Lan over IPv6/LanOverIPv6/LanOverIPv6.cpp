@@ -32,7 +32,7 @@ LPVOID pGetsocknameOrg;
 SOCKET serverSocket;
 SOCKET clientSocket;
 
-TCHAR debugString[10];
+TCHAR debugString[40];
 
 void v4v6map() {
 	FILE *f = fopen(MAP_FILE, "r");
@@ -40,14 +40,14 @@ void v4v6map() {
 		OutputDebugString(L"Mapfile open failed.");
 		return;
 	}
-	char buff[30];
+	char buff[40];
 	int i;
 	for (i = 0; i < MAPTABLE_SIZE; i++) {
 		if (fscanf(f, "%s", buff) == EOF)
 			break;
 		InetPtonA(AF_INET, buff, &(maptable[i].ipv4));
 		fscanf(f, "%s", buff);
-		InetPtonA(PF_INET6, buff, &(maptable[i].ipv6));
+		InetPtonA(AF_INET6, buff, &(maptable[i].ipv6));
 	}
 	fclose(f);
 	wsprintf(debugString, L"%d %s", i, L"items has added to maptable.");
